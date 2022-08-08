@@ -1,8 +1,3 @@
-from enum import Enum
-from web3 import Web3
-import ABI
-
-ABI = ABI.ABI
 INFURA_API_KEY = "1s7G4eZo0bBvuZlq8Cxqcsw7lgj"
 
 # https://chainid.network/chains.json
@@ -349,6 +344,17 @@ DEFAULT_CHAIN_INFO = {
     31337: {"rpc": ["http://127.0.0.1:8545/"]},
 }
 
+
+for chain_id, chain_info in DEFAULT_CHAIN_INFO.items():
+    for rpc_index, rpc in enumerate(chain_info.get("rpc")):
+        if "INFURA_API_KEY" in rpc:
+            assert INFURA_API_KEY is not None, "Provide API KEY in Your Config"
+            _: str = DEFAULT_CHAIN_INFO[chain_id]["rpc"][rpc_index]
+            _ = _.replace("${INFURA_API_KEY}", INFURA_API_KEY)
+            DEFAULT_CHAIN_INFO[chain_id]["rpc"][rpc_index] = _
+            # string.Template("https://mainnet.infura.io/v3/${INFURA_API_KEY}").substitute(INFURA_API_KEY="asd")
+
+
 CHAIN_SEPARATED_ADDRESS = {
     1: "0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441",
     4: "0x42Ad527de7d4e9d9d011aC45B31D8551f8Fe9821",
@@ -366,50 +372,5 @@ CHAIN_SEPARATED_ADDRESS = {
     31337: "0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441",
 }
 
-
-class MultiChain(Enum):
-    ETH = 1
-    RINKEBY = 4
-    GORLI = 5
-    OPTIMISM = 10
-    KOVAN = 42
-    BSC = 56
-    GNO = 100
-    HECO = 128
-    POLYGON = 137
-    FTM = 250
-    ARBITRUM_ONE = 42161
-    CELO = 42220
-    AVAX = 43114
-    LOCAL = 31337
-
-    @property
-    def rpcs(self) -> list:
-        return DEFAULT_CHAIN_INFO.get(self.value).get("rpc")
-
-
-    @property
-    def rpc(self) -> list:
-        return self.rpcs[0]
-
-    @property
-    def w3(self):
-        return Web3(Web3.HTTPProvider(self.rpc))
-
-    @property
-    def multicall_address(self):
-        return CHAIN_SEPARATED_ADDRESS.get(self.value)
-
-    @property
-    def multicall(self):
-        return self.w3.eth.contract(self.multicall_address, abi=ABI.MARKER_MULTI_CALL)
-
-
-for chain_id, chain_info in DEFAULT_CHAIN_INFO.items():
-    for rpc_index, rpc in enumerate(chain_info.get("rpc")):
-        if "INFURA_API_KEY" in rpc:
-            assert INFURA_API_KEY is not None, "Provide API KEY in Your Config"
-            _: str = DEFAULT_CHAIN_INFO[chain_id]["rpc"][rpc_index]
-            _ = _.replace("${INFURA_API_KEY}", INFURA_API_KEY)
-            DEFAULT_CHAIN_INFO[chain_id]["rpc"][rpc_index] = _
-            # string.Template("https://mainnet.infura.io/v3/${INFURA_API_KEY}").substitute(INFURA_API_KEY="asd")
+AGGREGATE_CALLS_FUNC = "aggregate3"  # "function aggregate3(Call3[] calldata calls) public payable (Result[] memory returnData)"
+CHAIN_MULTI_CALL_V3 = "0xcA11bde05977b3631167028862bE2a173976CA11"

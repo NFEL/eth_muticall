@@ -3,3 +3,4 @@ tt*
 *.pyc
 __pypackages__/
 __pycache__/
+tmp*

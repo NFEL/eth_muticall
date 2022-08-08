@@ -4,9 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+pytest = "*"
 
 [dev-packages]
 web3 = "*"
+ipykernel = "*"
 
 [requires]
 python_version = "3.8"
