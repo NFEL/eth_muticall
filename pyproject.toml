@@ -1,22 +1,19 @@
-[project]
-name = "MultiCall"
-version = "0.1.0"
-description = "web3"
-authors = [
-    {name = "nfel", email = "nfilsaraee@gmail.com"},
-]
-dependencies = []
-requires-python = ">=3.9"
+[tool.poetry]
+name = "eth_multicall"
+version = "0.2.1"
+description = "Uses Multicall v3 and eth_abi encode + decoder api to fetch multiple json-rpc queries all at once"
+authors = ["Nfel"]
+repository = "" 
 readme = "README.md"
-license = {text = "MIT"}
-[project.optional-dependencies]
 
-[tool.pdm]
-[tool.pdm.dev-dependencies]
-dev = [
-    "web3>=5.30.0",
-]
+[tool.poetry.dependencies]
+python = "^3.8"
+web3 = "^5.30.0"
+
+[tool.poetry.dev-dependencies]
+wheel = "^0.37.1"
+pytest = "^7.1.2"
 
 [build-system]
-requires = ["pdm-pep517>=0.12.0"]
-build-backend = "pdm.pep517.api"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

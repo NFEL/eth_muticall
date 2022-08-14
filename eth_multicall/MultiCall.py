@@ -1,6 +1,6 @@
 import logging
-from MultiChain import MultiChain
-from custome_types import List, CallFunction, Result, Dict
+from eth_multicall.MultiChain import MultiChain
+from eth_multicall.custome_types import List, CallFunction, Result, Dict
 from eth_abi.exceptions import DecodingError
 
 logger = logging.getLogger(__name__)
@@ -13,6 +13,8 @@ class MultiCaller(list):
             response = Result(*response)
             if response.success:
                 try:
+                    logger.info(calls[i])
+                    logger.info(calls[i].result_decoder)
                     _tmp = calls[i].result_decoder(response.returnData)
                     if len(_tmp) == 1:
                         _res.append(_tmp[0])
